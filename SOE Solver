@@ -1,0 +1,79 @@
+from numpy.linalg import inv
+import numpy as np
+from fractions import Fraction
+from tkinter import *
+
+import sys
+
+bruh = Tk()
+bruh.title('System of equations solver')
+
+
+yo = Entry(bruh,width=5)
+yo.grid(row=0,column=0,padx=5,pady=5)
+Label(bruh,text="X").grid(row=0,column=1)
+yoo = Entry(bruh,width=5)
+yoo.grid(row=0,column=2,padx=5,pady=5)
+
+
+
+def go():
+
+    r = int(yo.get())
+    c = int(yoo.get())
+    dim = (r,c)
+    adim = (r,1)
+    global yeah
+    global number
+    global bro
+    global ans
+    root = Toplevel()
+    yeah = []
+    bro = []
+    for i in range(r):
+        for j in range(c):
+
+            number = StringVar()
+            number = Entry(root, width=5)
+            number.grid(row=i, column=j,padx=5,pady=5)
+            yeah.append(number)
+    for p in range(r):
+        Label(root,text="=").grid(row=p,column=c)
+        ans = StringVar()
+        ans = Entry(root, width=5)
+        ans.grid(row=p,column = c+1,padx=5,pady=5)
+        bro.append(ans)
+
+
+    def idea():
+        global yeah
+        global bro
+        a = np.zeros(dim)
+        b = np.zeros(adim)
+
+        cnt = 0
+        for i in range(r):
+            for j in range(c):
+                a[i][j] = float(yeah[cnt].get())
+                cnt+=1
+
+        for p in range(r):
+            b[p,0] = float(bro[p].get())
+
+        inva = inv(a)
+
+        result = inva.dot(b)
+        count = 0
+        for num in result:
+            Label(root, text=str(Fraction(float(num)).limit_denominator(20))).grid(row=r, column=count)
+            count += 1
+    Button(root,text="Solve",command=idea).grid(row=r+1,column=c)
+
+
+
+
+
+Button(bruh,text="NxN Matrix",command= go).grid(row=1,column=1)
+
+
+bruh.mainloop()
